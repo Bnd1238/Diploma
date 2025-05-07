@@ -55,27 +55,26 @@ def add_Way(way):
         """,{"a": way["nd"][i],"b":way["nd"][i+1],"id":way["id"],"r":r()})
 def add_Rel(rel):
     nodes=[]
+    #print(rel["tag"]["ref"])
     for member in rel["member"]:
         if member["type"]=="node" and member["role"]=="stop":
             nodes.append(member["ref"])
-    for i in nodes:
-        for j in nodes:
-            if i==j:
-                continue
-            Query("""
-            MATCH (a:Node {id:$a}),(b:Node{id:$b})
-            CREATE (a)-[:bus]->(b),(b)-[:bus]->(a) 
-            """,{"a":i,"b":j})
-            Query("""
-            MATCH (a)-[r:bus]->(b)
-            WHERE a.id = $a AND b.id = $b
-            SET r.price = $r, r.route=$route
-            """,{"a":i,"b":j,"r":r(),"route":rel["tag"]["ref"]})
-            Query("""
-            MATCH (b)-[r:bus]->(a)
-            WHERE a.id = $a AND b.id = $b
-            SET r.price = $r, r.route=$route
-            """,{"a":i,"b":j,"r":r(),"route":rel["tag"]["ref"]})
+    print(nodes)
+    for i in range(len(nodes)-1):
+        Query("""
+        MATCH (a:Node {id:$a}),(b:Node{id:$b})
+        CREATE (a)-[:bus]->(b),(b)-[:bus]->(a) 
+        """,{"a":nodes[i],"b":nodes[i+1]})
+        Query("""
+        MATCH (a)-[r:bus]->(b)
+        WHERE a.id = $a AND b.id = $b
+        SET r.price = $r, r.route=$route
+        """,{"a":nodes[i],"b":nodes[i+1],"r":r(),"route":rel["tag"]["ref"]})
+        Query("""
+        MATCH (b)-[r:bus]->(a)
+        WHERE a.id = $a AND b.id = $b
+        SET r.price = $r, r.route=$route
+        """,{"a":nodes[i],"b":nodes[i+1],"r":r(),"route":rel["tag"]["ref"]})
 def migration():
     for node in map:
         print(node["type"])
