@@ -28,7 +28,7 @@ transport={
         "comfort":8
     },
     "ferry":{
-        "speed":10,
+        "speed":15,
         "price":100,
         "comfort":2
     }
