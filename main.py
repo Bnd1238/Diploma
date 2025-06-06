@@ -5,7 +5,7 @@ import osmiter
 import json 
 import math as math
 driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "password"),max_connection_pool_size=100)
-map = osmiter.iter_from_osm("newmap.osm")
+map = osmiter.iter_from_osm("map.osm")
 
 INF=999999
 
