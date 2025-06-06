@@ -35,9 +35,6 @@ transport={
     }
 
 }
-def printarr(arr):
-    for i in range(len(arr)):
-        print(i,arr[i])
 def Query(query, parameters):
 
     with driver.session() as session:
